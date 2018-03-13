@@ -1,42 +1,45 @@
 package com.wukw.kindle.Uitl;
 
+import sun.nio.ch.DirectBuffer;
+
+import java.awt.image.DirectColorModel;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 public class UrlDown {
 
     public static void Down(String urlStr,String fileName,String savePath)  {
        try {
-
+           System.out.println("开始下载");
 
            URL url = new URL(urlStr);
            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
            conn.setConnectTimeout(3 * 1000);
            //防止屏蔽程序抓取而返回403错误
-           conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+           conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 7.0; STF-AL10 Build/HUAWEISTF-AL10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043508 Safari/537.36 V1_AND_SQ_7.2.0_730_YYB_D QQ/7.2.0.3270 NetType/4G WebP/0.3.0 Pixel/1080");
            //得到输入流
            InputStream inputStream = conn.getInputStream();
+
            //获取自己数组
            byte[] getData = readInputStream(inputStream);
+           System.out.println("下载成功");
 
-           //文件保存位置
-           File saveDir = new File(savePath);
-           if (!saveDir.exists()) {
-               saveDir.mkdir();
-           }
-           File file = new File(saveDir + File.separator + fileName);
-           FileOutputStream fos = new FileOutputStream(file);
-           fos.write(getData);
-           if (fos != null) {
-               fos.close();
-           }
+
+
+           FileChannel fileChannel ;
+           fileChannel = new FileOutputStream(savePath + fileName).getChannel();
+           ByteBuffer bf = ByteBuffer.wrap(getData);
+           fileChannel.write(bf);
+
+           fileChannel.close();
+
            if (inputStream != null) {
                inputStream.close();
            }
-
-
            System.out.println("info:" + url + " download success");
        }catch (Exception e){
            e.printStackTrace();
@@ -46,6 +49,8 @@ public class UrlDown {
     }
 
     public static  byte[] readInputStream(InputStream inputStream) throws IOException {
+
+
         byte[] buffer = new byte[1024];
         int len = 0;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

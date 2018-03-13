@@ -1,0 +1,6 @@
+*.class
+*.bin
+/.idea
+/.gradle/4.3/fileHashes/fileHashes.lock
+
+.idea/*

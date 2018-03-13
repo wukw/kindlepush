@@ -49,7 +49,7 @@ public class ResourceService {
             }
         }
         //线程池下载
-        DownServiceRunable.Execute(allDateInfoList);
+        DownServiceRunable.Execute(allDateInfoList,3);
         System.out.println("查询结束");
 
 
@@ -58,6 +58,6 @@ public class ResourceService {
 
 
     public static void main(String[] args) throws InterruptedException {
-        new ResourceService().getOriginResource("斗罗大陆");
+        new ResourceService().getOriginResource("三体");
     }
 }

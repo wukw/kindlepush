@@ -7,6 +7,7 @@ import com.wukw.kindle.Uitl.UrlDown;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -24,7 +25,7 @@ public class DownServiceRunable implements  Runnable {
     public void run() {
         while (i.intValue() < dataInfoList.size()) {
             i.addAndGet(1);
-            System.out.println("执行下载"+i.intValue()+"线程id"+Thread.currentThread().getId());
+            System.out.println("执行下载任务"+i.intValue()+"线程id"+Thread.currentThread().getId());
 
             DataInfo dataInfo = dataInfoList.get(i.intValue());
             if (dataInfo.getLink() != null &&
@@ -32,14 +33,14 @@ public class DownServiceRunable implements  Runnable {
 
                 String bookname = null;
                 if (dataInfo.getTitle().indexOf("mobi") > 0) {
-                    bookname = dataInfo.getTitle()+i.intValue() + ".mobi";
+                    bookname = dataInfo.getTitle() + ".mobi";
                 }
                 if (dataInfo.getTitle().indexOf("epub") > 0) {
-                    bookname = dataInfo.getTitle()+i.intValue() + ".epub";
+                    bookname = dataInfo.getTitle() + ".epub";
                 }
 
                 //System.out.println("开始下载" + i.intValue() + "-------" + dataInfoList.size() + dataInfo.getLink());
-                UrlDown.Down(dataInfo.getLink(), bookname, "/Users/wukaiwei/book");
+                UrlDown.Down(dataInfo.getLink(), bookname, "D:\\book\\");
 
 
             }
@@ -51,9 +52,19 @@ public class DownServiceRunable implements  Runnable {
 
 
 
-    public static void Execute(List<DataInfo> dataInfoList){
+    public static void Execute(List<DataInfo> dataInfoList,int threadNum){
         DownServiceRunable downServiceRunable = new DownServiceRunable(dataInfoList);
-        Executors.newFixedThreadPool(10).execute(downServiceRunable);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        while(threadNum >= 0){
+            threadNum--;
+            executorService.execute(downServiceRunable);
+        }
+
+
+
+
+
+
 
     }
 }
