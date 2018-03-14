@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class ResourceService {
 
 
-    public void getOriginResource(String  key ) throws InterruptedException {
+    public List<DataInfo> getOriginResource(String  key ) throws InterruptedException {
         String firstUrl = "https://www2.jiumodiary.com/init_hubs.php";
         Map<String,Object> map = new HashMap<>();
         map.put("q",key);
@@ -51,6 +51,7 @@ public class ResourceService {
         //线程池下载
         DownServiceRunable.Execute(allDateInfoList,3);
         System.out.println("查询结束");
+        return allDateInfoList;
 
 
 
@@ -58,6 +59,6 @@ public class ResourceService {
 
 
     public static void main(String[] args) throws InterruptedException {
-        new ResourceService().getOriginResource("三体");
+        new ResourceService().getOriginResource("斗罗大陆");
     }
 }

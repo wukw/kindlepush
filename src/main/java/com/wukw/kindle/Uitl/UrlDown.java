@@ -16,6 +16,8 @@ public class UrlDown {
        try {
            System.out.println("开始下载");
 
+           File file = new File(urlStr);
+           System.out.println("文件名字"+file.getName());
            URL url = new URL(urlStr);
            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
            conn.setConnectTimeout(3 * 1000);
@@ -26,7 +28,7 @@ public class UrlDown {
 
            //获取自己数组
            byte[] getData = readInputStream(inputStream);
-           System.out.println("下载成功");
+
 
 
 
@@ -41,6 +43,7 @@ public class UrlDown {
                inputStream.close();
            }
            System.out.println("info:" + url + " download success");
+           System.out.println("下载成功");
        }catch (Exception e){
            e.printStackTrace();
        }
@@ -59,5 +62,11 @@ public class UrlDown {
         }
         bos.close();
         return bos.toByteArray();
+    }
+
+    public static void main(String[] args) {
+        String url = "http://doudouso.com/fetch_file.php?loc=K25EZDJ3SlpBbGJndzlHamdhWk9rbVJsMkFkWnR0S3NtWUw1ME1iUjZtbys3K0FSazVOQzllUC93MzgzU1J1bDRjOEpUbmFveWp5TkE1QXYrQWtHZCs0dDFKeGtSZmlRSlQ4dnRwc2lLc1U9&t=SkhnVWl3TW1IR1BWRFgvN2hBZFQ5Zz09&f=%E4%B8%89%E4%BD%93";
+
+        new UrlDown().Down(url,"三体.mobi","D:\\book\\");
     }
 }

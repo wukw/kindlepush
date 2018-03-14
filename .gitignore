@@ -4,3 +4,8 @@
 /.gradle/4.3/fileHashes/fileHashes.lock
 
 .idea/*
+fileContent
+*.lock
+buildOutputCleanup
+libs
+*.MF

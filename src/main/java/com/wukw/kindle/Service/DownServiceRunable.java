@@ -28,7 +28,7 @@ public class DownServiceRunable implements  Runnable {
             System.out.println("执行下载任务"+i.intValue()+"线程id"+Thread.currentThread().getId());
 
             DataInfo dataInfo = dataInfoList.get(i.intValue());
-            if (dataInfo.getLink() != null &&
+            if (dataInfo.getLink() != null &&  dataInfo.getLink().indexOf("doudou") > 0 &&
                     (dataInfo.getTitle().indexOf("mobi") > 0 || dataInfo.getTitle().indexOf("epub") > 0)) {
 
                 String bookname = null;
@@ -59,12 +59,5 @@ public class DownServiceRunable implements  Runnable {
             threadNum--;
             executorService.execute(downServiceRunable);
         }
-
-
-
-
-
-
-
     }
 }
