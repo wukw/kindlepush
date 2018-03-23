@@ -30,6 +30,10 @@ dependencies {
 
     compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
 
+    // https://mvnrepository.com/artifact/dom4j/dom4j
+    compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+
+
 }
 
 

@@ -28,10 +28,6 @@ public class UrlDown {
 
            //获取自己数组
            byte[] getData = readInputStream(inputStream);
-
-
-
-
            FileChannel fileChannel ;
            fileChannel = new FileOutputStream(savePath + fileName).getChannel();
            ByteBuffer bf = ByteBuffer.wrap(getData);
@@ -52,8 +48,6 @@ public class UrlDown {
     }
 
     public static  byte[] readInputStream(InputStream inputStream) throws IOException {
-
-
         byte[] buffer = new byte[1024];
         int len = 0;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -64,9 +58,5 @@ public class UrlDown {
         return bos.toByteArray();
     }
 
-    public static void main(String[] args) {
-        String url = "http://doudouso.com/fetch_file.php?loc=K25EZDJ3SlpBbGJndzlHamdhWk9rbVJsMkFkWnR0S3NtWUw1ME1iUjZtbys3K0FSazVOQzllUC93MzgzU1J1bDRjOEpUbmFveWp5TkE1QXYrQWtHZCs0dDFKeGtSZmlRSlQ4dnRwc2lLc1U9&t=SkhnVWl3TW1IR1BWRFgvN2hBZFQ5Zz09&f=%E4%B8%89%E4%BD%93";
 
-        new UrlDown().Down(url,"三体.mobi","D:\\book\\");
-    }
 }

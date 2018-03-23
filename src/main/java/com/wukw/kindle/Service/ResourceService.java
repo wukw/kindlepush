@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.wukw.kindle.Model.*;
 import com.wukw.kindle.Uitl.HttpUtil;
 import com.wukw.kindle.Uitl.UrlDown;
+import com.wukw.kindle.config.SetProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,6 +22,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class ResourceService {
 
+    @Value("${originurl}")
+    String originurl;
 
     public List<DataInfo> getOriginResource(String  key ) throws InterruptedException {
         String firstUrl = "https://www2.jiumodiary.com/init_hubs.php";
@@ -29,7 +34,7 @@ public class ResourceService {
         System.out.println(code.getId());
 
         TimeUnit.SECONDS.sleep(1);
-        String secondUrl = "https://www.jiumodiary.com/ajax_fetch_hubs.php";
+        String secondUrl = originurl;
         Map<String,Object> secondMap = new HashMap<>();
         secondMap.put("id",code.getId());
         secondMap.put("set",0);
@@ -49,7 +54,7 @@ public class ResourceService {
             }
         }
         //线程池下载
-        DownServiceRunable.Execute(allDateInfoList,3);
+        //DownServiceRunable.Execute(allDateInfoList,3);
         System.out.println("查询结束");
         return allDateInfoList;
 

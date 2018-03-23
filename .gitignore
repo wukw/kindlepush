@@ -9,3 +9,4 @@ fileContent
 buildOutputCleanup
 libs
 *.MF
+application.properties

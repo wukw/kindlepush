@@ -56,7 +56,7 @@ public class SendService {
      * @throws UnsupportedEncodingException
      */
     public MimeMessage createMessage(Session session, String fromAccount, String toAccount,String fileString) throws MessagingException, UnsupportedEncodingException {
-       MimeMessage message =  createMessage(session,fromAccount,toAccount,false);
+        MimeMessage message =  createMessage(session,fromAccount,toAccount,false);
         MimeBodyPart attachment = new MimeBodyPart();
         FileDataSource fileDataSource = new FileDataSource(fileString);
         DataHandler dh2 = new DataHandler(fileDataSource);  // 读取本地文件

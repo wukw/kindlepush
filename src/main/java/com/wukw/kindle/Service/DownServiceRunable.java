@@ -1,17 +1,25 @@
 package com.wukw.kindle.Service;
 
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import com.wukw.kindle.KIndleAPP;
 import com.wukw.kindle.Model.DataInfo;
 import com.wukw.kindle.Uitl.UrlDown;
+import com.wukw.kindle.config.SetProperties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DownServiceRunable implements  Runnable {
+
+   SetProperties setProperties =  (SetProperties) KIndleAPP.springContext.getBean("SetProperties");
+   public  final String savapath =setProperties.getSavepath();
 
     List<DataInfo> dataInfoList = new ArrayList<>();
     DownServiceRunable(List<DataInfo> list){
@@ -24,6 +32,7 @@ public class DownServiceRunable implements  Runnable {
     @Override
     public void run() {
         while (i.intValue() < dataInfoList.size()) {
+
             i.addAndGet(1);
             System.out.println("执行下载任务"+i.intValue()+"线程id"+Thread.currentThread().getId());
 
@@ -32,15 +41,18 @@ public class DownServiceRunable implements  Runnable {
                     (dataInfo.getTitle().indexOf("mobi") > 0 || dataInfo.getTitle().indexOf("epub") > 0)) {
 
                 String bookname = null;
-                if (dataInfo.getTitle().indexOf("mobi") > 0) {
-                    bookname = dataInfo.getTitle() + ".mobi";
+                try {
+                    if (dataInfo.getTitle().indexOf("mobi") > 0) {
+                        bookname = new String((dataInfo.getTitle() + ".mobi").getBytes(), "utf-8");
+                    }
+                    if (dataInfo.getTitle().indexOf("epub") > 0) {
+                        bookname = new String((dataInfo.getTitle() + ".epub").getBytes(), "utf-8");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-                if (dataInfo.getTitle().indexOf("epub") > 0) {
-                    bookname = dataInfo.getTitle() + ".epub";
-                }
-
                 //System.out.println("开始下载" + i.intValue() + "-------" + dataInfoList.size() + dataInfo.getLink());
-                UrlDown.Down(dataInfo.getLink(), bookname, "D:\\book\\");
+                UrlDown.Down(dataInfo.getLink(), bookname, savapath);
 
 
             }
