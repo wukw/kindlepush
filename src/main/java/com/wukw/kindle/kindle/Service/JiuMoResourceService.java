@@ -48,7 +48,7 @@ public class JiuMoResourceService {
             }
         }
         //线程池下载
-        //DownServiceRunable.Execute(allDateInfoList,3);
+        DownServiceRunable.Execute(allDateInfoList,3);
         System.out.println("查询结束");
         return allDateInfoList;
     }
@@ -62,7 +62,7 @@ public class JiuMoResourceService {
             wxImageMessage.setUrl(dataInfo.getLink());
             wxImageMessage.setTitle(dataInfo.getTitle());
             wxImageMessage.setDescription(dataInfo.getDes());
-            wxImageMessage.setPicUrl("http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJ92vuknlfSNjNgc0oENsxKJeHSibLcxvn47n9GVVQEh6OxZIYy67uiaHGV8DJmGdy6yp4E8wh7XcHw/132");
+            wxImageMessage.setPicUrl("http://cartmall.oss-cn-hangzhou.aliyuncs.com/img/1521798746284.jpg");
             imageMessageList.add(wxImageMessage);
         }
         return imageMessageList;
