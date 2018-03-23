@@ -1,48 +1,8 @@
-group 'com.wukw.kindlepush'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'org.springframework.boot'
-
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.0.RELEASE'
-    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
-    // https://mvnrepository.com/artifact/com.alibaba/fastjson
-    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.46'
-    // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
-    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
-    compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.1'
-
-    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
-
-    // https://mvnrepository.com/artifact/dom4j/dom4j
-    compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
-
-
-}
-
-
-
 buildscript {
 
     ext {
         springIOVersion = '1.0.0.RELEASE'
-        springBootVersion = '1.5.9.RELEASE'
+        springBootVersion = '2.0.0.RELEASE'
     }
     repositories {
         mavenCentral()//依赖Maven仓库
@@ -52,12 +12,58 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.RELEASE")
     }
 }
-jar {
-    baseName = 'kindle'
-    version =  '0.1.0'
-    manifest {
-        attributes "Manifest-Version": 1.0,
-                'Main-Class': 'com.wukw.kindle'
+
+
+
+
+
+allprojects {
+    group 'com.wukw.kindlepush'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.0.RELEASE'
+        // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+        compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
+        // https://mvnrepository.com/artifact/com.alibaba/fastjson
+        compile group: 'com.alibaba', name: 'fastjson', version: '1.2.46'
+        // https://mvnrepository.com/artifact/org.projectlombok/lombok
+        compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
+        // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+        compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.1'
+
+        compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
+
+        // https://mvnrepository.com/artifact/dom4j/dom4j
+        compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+
+
+    }
+
+
+    jar {
+        baseName = 'kindle'
+        version = '0.1.0'
+        manifest {
+            attributes "Manifest-Version": 1.0,
+                    'Main-Class': 'com.wukw.kindle'
+        }
     }
 }
 

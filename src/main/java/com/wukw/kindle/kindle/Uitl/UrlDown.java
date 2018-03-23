@@ -1,4 +1,4 @@
-package com.wukw.kindle.Uitl;
+package com.wukw.kindle.kindle.Uitl;
 
 import sun.nio.ch.DirectBuffer;
 

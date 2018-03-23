@@ -1,4 +1,4 @@
-package com.wukw.kindle.Uitl;
+package com.wukw.kindle.kindle.Uitl;
 
 
 import org.apache.http.HttpEntity;
@@ -13,7 +13,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.LinkedList;
@@ -65,6 +68,18 @@ public class HttpUtil {
                 System.out.println("http请求失败，uri{},exception{}");
             }
             return null;
+    }
+
+
+    public  static  String getRequestInputStream(HttpServletRequest request) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+        StringBuffer content = new StringBuffer();
+        String buffer = null;
+        while ((buffer = br.readLine()) != null) {
+            content.append(buffer);
+        }
+        return content.toString();
     }
 
 

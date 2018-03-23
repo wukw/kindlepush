@@ -1,7 +1,7 @@
-package com.wukw.kindle.Uitl;
+package com.wukw.kindle.kindle.Uitl;
 
 
-import com.wukw.kindle.Model.WXImageMessage;
+import com.wukw.kindle.kindle.Model.WXImageMessage;
 
 import java.util.List;
 

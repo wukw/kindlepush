@@ -1,17 +1,12 @@
-package com.wukw.kindle.Service;
+package com.wukw.kindle.kindle.Service;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import com.wukw.kindle.KIndleAPP;
-import com.wukw.kindle.Model.DataInfo;
-import com.wukw.kindle.Uitl.UrlDown;
-import com.wukw.kindle.config.SetProperties;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import com.wukw.kindle.kindle.KIndleAPP;
+import com.wukw.kindle.kindle.Model.DataInfo;
+import com.wukw.kindle.kindle.Uitl.UrlDown;
+import com.wukw.kindle.kindle.config.SetProperties;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;

@@ -1,26 +1,19 @@
-package com.wukw.kindle.Service;
+package com.wukw.kindle.kindle.Service;
 
 import com.alibaba.fastjson.JSON;
-import com.wukw.kindle.Model.*;
-import com.wukw.kindle.Uitl.HttpUtil;
-import com.wukw.kindle.Uitl.UrlDown;
-import com.wukw.kindle.config.SetProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wukw.kindle.kindle.Uitl.HttpUtil;
+import com.wukw.kindle.kindle.Model.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class ResourceService {
+public class JiuMoResourceService {
 
     @Value("${originurl}")
     String originurl;
@@ -49,7 +42,8 @@ public class ResourceService {
             for(Detail detail : detailList){
                 List<DataInfo> dataInfoList = detail.getData();
                 for(DataInfo dataInfo : dataInfoList){
-                    allDateInfoList.add(dataInfo);
+                    if(dataInfo.getLink() != null && dataInfo.getLink().indexOf("doudou") >0)
+                        allDateInfoList.add(dataInfo);
                 }
             }
         }
@@ -57,13 +51,27 @@ public class ResourceService {
         //DownServiceRunable.Execute(allDateInfoList,3);
         System.out.println("查询结束");
         return allDateInfoList;
+    }
 
-
-
+    public List<WXImageMessage> bookResourcesTOWxMessage(List<DataInfo> dataInfoList){
+        List<WXImageMessage>  imageMessageList = new ArrayList<>();
+        int maxsize = dataInfoList.size()>7?7:dataInfoList.size();
+        for(int i=0;i<maxsize;i++){
+            DataInfo dataInfo = dataInfoList.get(i);
+            WXImageMessage wxImageMessage = new WXImageMessage();
+            wxImageMessage.setUrl(dataInfo.getLink());
+            wxImageMessage.setTitle(dataInfo.getTitle());
+            wxImageMessage.setDescription(dataInfo.getDes());
+            wxImageMessage.setPicUrl("http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJ92vuknlfSNjNgc0oENsxKJeHSibLcxvn47n9GVVQEh6OxZIYy67uiaHGV8DJmGdy6yp4E8wh7XcHw/132");
+            imageMessageList.add(wxImageMessage);
+        }
+        return imageMessageList;
     }
 
 
+
+
     public static void main(String[] args) throws InterruptedException {
-        new ResourceService().getOriginResource("斗罗大陆");
+        new JiuMoResourceService().getOriginResource("斗罗大陆");
     }
 }
