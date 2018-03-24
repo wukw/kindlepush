@@ -58,5 +58,10 @@ public class UrlDown {
         return bos.toByteArray();
     }
 
+    public static void main(String[] args) {
+        String url = "http://d34.ixdzs.com/156/156607/156607txt.zip";
+         UrlDown.Down(url,"测试","D:\\book\\");
+    }
+
 
 }

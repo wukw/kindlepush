@@ -11,4 +11,12 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+    // https://mvnrepository.com/artifact/javax.xml.parsers/jaxp-api
+    compile group: 'javax.xml.parsers', name: 'jaxp-api', version: '1.4.5'
+    // https://mvnrepository.com/artifact/net.sourceforge.htmlcleaner/htmlcleaner
+    compile group: 'net.sourceforge.htmlcleaner', name: 'htmlcleaner', version: '2.21'
+
+
 }
