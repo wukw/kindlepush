@@ -3,7 +3,7 @@ package com.wukw.kindle.Model;
 import lombok.Data;
 
 @Data
-public class Book {
+public class ResourceBook {
     String name;
     String author;
     String des;

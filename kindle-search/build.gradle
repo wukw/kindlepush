@@ -17,6 +17,7 @@ dependencies {
     compile group: 'javax.xml.parsers', name: 'jaxp-api', version: '1.4.5'
     // https://mvnrepository.com/artifact/net.sourceforge.htmlcleaner/htmlcleaner
     compile group: 'net.sourceforge.htmlcleaner', name: 'htmlcleaner', version: '2.21'
+    compile project(":kindle-base")
 
 
 }

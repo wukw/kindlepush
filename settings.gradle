@@ -1,4 +1,5 @@
 rootProject.name = 'kindlepush'
-include 'kindlesearch'
-include 'kendle-repo'
+include 'kindle-search'
+include 'kindle-repo'
+include 'kindle-base'
 

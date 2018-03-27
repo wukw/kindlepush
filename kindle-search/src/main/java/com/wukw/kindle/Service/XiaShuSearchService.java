@@ -1,9 +1,14 @@
-package com.wukw.kindle;
+package com.wukw.kindle.Service;
 
-import com.wukw.kindle.Model.Book;
+import com.wukw.kindle.Dao.BookDao;
+import com.wukw.kindle.Model.ResourceBook;
 import com.wukw.kindle.Model.XPathResult;
 import com.wukw.kindle.Util.XpathUtil;
+import com.wukw.kindle.repo.model.Book;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -12,9 +17,18 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
+@Service
+@Slf4j
 public class XiaShuSearchService {
+
+    @Autowired
+    BookDao bookDao;
+    @Autowired
+    XiaShuSearchService xiaShuSearchService;
+
+
     String  xiashuurl = "https://www.xiashu.la/";
 
     /**
@@ -57,12 +71,13 @@ public class XiaShuSearchService {
      * @return
      * @throws XPathExpressionException
      */
-    public List<Book> XiaShuBookPageSeach(String rooturl,String pageurl,int num) throws XPathExpressionException {
-
-        List<Book> firstDownUrlList = new ArrayList<>();
+    public List<ResourceBook> XiaShuBookPageSeach(String rooturl, String pageurl, int num) throws XPathExpressionException {
+        String pagenumurl = pageurl+num+".html";
+        List<ResourceBook> firstDownUrlList = new ArrayList<>();
             //获取书本资源
             String secondeExp = "//*[@class='pic']/a/img";
-            XPathResult xPathResult1Seconde = XpathUtil.getXPath(rooturl+pageurl);
+            XPathResult xPathResult1Seconde = XpathUtil.getXPath(rooturl+pagenumurl);
+            System.out.println("-----------------页面路径:"+rooturl+pageurl);
             Object result = xPathResult1Seconde.getXPath().evaluate(secondeExp, xPathResult1Seconde.getDocument(), XPathConstants.NODESET);
             if (result instanceof NodeList) {
                 for (int i = 0; i < ((NodeList) result).getLength(); i++) {
@@ -72,29 +87,32 @@ public class XiaShuSearchService {
                     String titel = node2.getAttributes().getNamedItem("alt") + "";
                     String downurl = rooturl + bookid.substring(7, bookid.length() - 1) + "down";
                     String pic = node2.getAttributes().getNamedItem("data-original").toString();
-                    Book book = new Book();
-                    book.setName(titel);
+                    ResourceBook book = new ResourceBook();
+                    book.setName(titel.substring(5,titel.length()-1));
                     book.setFirstUrl(downurl);
                     book.setPic(pic);
                     book.setAuthor(author);
                     firstDownUrlList.add(book);
                 }
             }
-
-        XiaShuSearchService s = new XiaShuSearchService();
-        firstDownUrlList = s.XiaShuDownSelectPage(firstDownUrlList);
-        firstDownUrlList = s.XiaShuDownPage(firstDownUrlList);
+        try {
+            firstDownUrlList = xiaShuSearchService.XiaShuDownSelectPage(firstDownUrlList);
+            firstDownUrlList = xiaShuSearchService.XiaShuDownPage(firstDownUrlList);
+        }catch (Exception e){
+                e.printStackTrace();
+        }
         String pageInfoExp ="//*[@id=\"main\"]/div[3]/span";
         Object resultPageInfo = xPathResult1Seconde.getXPath().evaluate(pageInfoExp, xPathResult1Seconde.getDocument(), XPathConstants.NODE);
         if(resultPageInfo instanceof  Node){
             Node node = (Node)resultPageInfo;
             String pageinfo = node.getTextContent();
             System.out.println("分页信息"+pageinfo+"爬到第几"+num+"页");
+            log.info("分页信息"+pageinfo+"爬到第"+num+"页");
             Integer pagenum = new Integer(pageinfo.substring(1,5));
             if(num < pagenum) {
                 num++;
-                String newPageUrl = pageurl.substring(0, pageurl.length() - 6)+num+".html";
-                s.XiaShuBookPageSeach(rooturl,newPageUrl,num);
+                //String newPageUrl = pageurl+num+".html";
+                xiaShuSearchService.XiaShuBookPageSeach(rooturl,pageurl,num);
             }
 
         }
@@ -107,10 +125,10 @@ public class XiaShuSearchService {
      * @return
      * @throws XPathExpressionException
      */
-    public List<Book> XiaShuDownSelectPage(List<Book> firstDownUrlList) throws XPathExpressionException {
+    public List<ResourceBook> XiaShuDownSelectPage(List<ResourceBook> firstDownUrlList) throws XPathExpressionException {
 
-        List<Book> downUrlList = new ArrayList<>();
-        for (Book temp : firstDownUrlList) {
+        List<ResourceBook> downUrlList = new ArrayList<>();
+        for (ResourceBook temp : firstDownUrlList) {
             XPathResult xPathResultDownPage = XpathUtil.getXPath(temp.getFirstUrl());
             String downPageExp = "//*[@id=\"downlist\"]/ul/li[1]/span[5]/a";
             Object result = xPathResultDownPage.getXPath().evaluate(downPageExp, xPathResultDownPage.getDocument(), XPathConstants.NODESET);
@@ -119,7 +137,7 @@ public class XiaShuSearchService {
                     Node node3 = ((NodeList) result).item(i);
                     //System.out.println("第一步下载路径"+node3.getAttributes().getNamedItem("href"));
                     String downurl = node3.getAttributes().getNamedItem("href") + "";
-                    Book book = new Book();
+                    ResourceBook book = new ResourceBook();
                     BeanUtils.copyProperties(temp, book);
                     book.setSecondUrl(downurl.substring(6, downurl.length() - 1).replaceAll("amp;", ""));
                     downUrlList.add(book);
@@ -140,17 +158,31 @@ public class XiaShuSearchService {
      * @return
      * @throws XPathExpressionException
      */
-    public List<Book> XiaShuDownPage(List<Book> downUrlList) throws XPathExpressionException {
-        for (Book temp : downUrlList) {
+    public List<ResourceBook> XiaShuDownPage(List<ResourceBook> downUrlList) throws XPathExpressionException {
+        for (ResourceBook temp : downUrlList) {
             System.out.println("第一步下载路径" + temp.getSecondUrl());
-            XPathResult xPathResultRealDownPage = XpathUtil.getXPath(temp.getSecondUrl());
+
+            XPathResult xPathResultRealDownPage = null;
+            try {
+                xPathResultRealDownPage = XpathUtil.getXPath(temp.getSecondUrl());
+            }catch (Exception e){
+                continue;
+            }
             String realDownpage = "/html/body/div/div[1]/div/p[2]/a";
             Object realDownresult = xPathResultRealDownPage.getXPath().evaluate(realDownpage, xPathResultRealDownPage.getDocument(), XPathConstants.NODE);
             if (realDownresult instanceof Node) {
                 Node realUrlNode = (Node) realDownresult;
                 String realUrl = realUrlNode.getAttributes().getNamedItem("href").toString();
+                System.out.println("真实下载路径"+realUrl);
                 temp.setRealUrl(realUrl.substring(6,realUrl.length()-1));
-
+                Book book = new Book();
+                book.setCreateTime(new Date());
+                book.setOriginUrl(temp.getRealUrl());
+                book.setName(temp.getName());
+                book.setPic(temp.getPic());
+                book.setDes(temp.getDes());
+                book.setAuthor(temp.getAuthor());
+                bookDao.save(book);
             }
 
         }
@@ -173,7 +205,7 @@ public class XiaShuSearchService {
     public static void main(String[] args) throws IOException, ParserConfigurationException, XPathExpressionException {
         XiaShuSearchService s = new XiaShuSearchService();
         List<String> indexUrl=s.XiaShuIndexSearch();
-        List<Book> bookList =s.XiaShuBookPageSeach("https://www.xiashu.la/",indexUrl.get(0),1);
+        List<ResourceBook> bookList =s.XiaShuBookPageSeach("https://www.xiashu.la/",indexUrl.get(0),1);
         //bookList = s.XiaShuDownSelectPage(bookList);
         //bookList = s.XiaShuDownPage(bookList);
     }

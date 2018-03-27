@@ -10,3 +10,4 @@ buildOutputCleanup
 libs
 *.MF
 application.properties
+resources

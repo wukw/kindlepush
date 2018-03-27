@@ -52,6 +52,8 @@ allprojects {
 
         // https://mvnrepository.com/artifact/dom4j/dom4j
         compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+        compile('com.zaxxer:HikariCP')
+        compile('com.alibaba:druid:1.1.8')
 
 
     }
