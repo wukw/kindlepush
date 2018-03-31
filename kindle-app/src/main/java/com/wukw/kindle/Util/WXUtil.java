@@ -1,7 +1,8 @@
-package com.wukw.kindle.kindle.Uitl;
+package com.wukw.kindle.Util;
 
 
-import com.wukw.kindle.kindle.Model.WXImageMessage;
+import com.wukw.kindle.Model.WXImageMessage;
+import com.wukw.kindle.repo.model.Book;
 
 import java.util.List;
 
@@ -55,6 +56,41 @@ public class WXUtil {
             resultxml.append("<Description><![CDATA["+temp.getDescription()+"]]></Description>");
             resultxml.append("<PicUrl><![CDATA["+temp.getPicUrl()+"]]></PicUrl>");
             resultxml.append("<Url><![CDATA["+temp.getUrl()+"]]></Url>");
+            resultxml.append("</item>");
+        }
+        resultxml.append("</Articles>");
+        resultxml.append("</xml>");
+        return resultxml.toString();
+    }
+
+
+
+    /**
+     * 创建image消息
+     * @param ToUserName
+     * @param FromUserName
+     * @param CreateTime
+     * @return
+     */
+    public static String  createBookUrlMesg(String ToUserName,
+                                        String FromUserName,
+                                        Long CreateTime,
+                                        List<Book> message){
+        StringBuffer resultxml = new StringBuffer();
+        resultxml.append("<?xml version=1.0?>");
+        resultxml.append("<xml>");
+        resultxml.append("<ToUserName><![CDATA["+FromUserName+"]]></ToUserName>");
+        resultxml.append("<FromUserName><![CDATA["+ToUserName+"]]></FromUserName>");
+        resultxml.append("<CreateTime>"+CreateTime+"</CreateTime>");
+        resultxml.append("<MsgType><![CDATA[news]]></MsgType>");
+        resultxml.append("<ArticleCount>"+message.size()+"</ArticleCount>");
+        resultxml.append("<Articles>");
+        for(Book temp:message){
+            resultxml.append("<item>");
+            resultxml.append("<Title><![CDATA["+temp.getName()+"]]></Title>");
+            resultxml.append("<Description><![CDATA["+temp.getAuthor()+"]]></Description>");
+            resultxml.append("<PicUrl><![CDATA["+temp.getPic()+"]]></PicUrl>");
+            resultxml.append("<Url><![CDATA["+temp.getOriginUrl()+"]]></Url>");
             resultxml.append("</item>");
         }
         resultxml.append("</Articles>");

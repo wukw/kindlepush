@@ -1,11 +1,7 @@
-package com.wukw.kindle.kindle.Uitl;
+package com.wukw.kindle.Util;
 
-import sun.nio.ch.DirectBuffer;
-
-import java.awt.image.DirectColorModel;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;

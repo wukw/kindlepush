@@ -1,4 +1,4 @@
-package com.wukw.kindle.kindle.Model;
+package com.wukw.kindle.Model;
 
 import lombok.Data;
 

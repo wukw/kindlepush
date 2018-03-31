@@ -1,11 +1,11 @@
-package com.wukw.kindle.kindle.Controller;
+package com.wukw.kindle.Controller;
 
-import com.wukw.kindle.kindle.Model.DataInfo;
-import com.wukw.kindle.kindle.Model.WXImageMessage;
-import com.wukw.kindle.kindle.Service.JiuMoResourceService;
-import com.wukw.kindle.kindle.Uitl.HttpUtil;
-import com.wukw.kindle.kindle.Uitl.WXUtil;
-import com.wukw.kindle.kindle.Uitl.XmlUtil;
+import com.wukw.kindle.Service.BookService;
+import com.wukw.kindle.Service.JiuMoResourceService;
+import com.wukw.kindle.Util.HttpUtil;
+import com.wukw.kindle.Util.WXUtil;
+import com.wukw.kindle.Util.XmlUtil;
+import com.wukw.kindle.repo.model.Book;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("wx")
@@ -23,6 +26,8 @@ public class WXTestController {
 
     @Autowired
     JiuMoResourceService jiuMoResourceService;
+    @Autowired
+    BookService bookService ;
 
     @GetMapping("test")
     public String test(String echostr){
@@ -41,15 +46,17 @@ public class WXTestController {
             String FromUserName = (String)map.get("FromUserName");
             String ToUserName = (String)map.get("ToUserName");
             //查询资源
-            List<DataInfo> dataInfos =  jiuMoResourceService.getOriginResource(key);
+            //List<DataInfo> dataInfos =  jiuMoResourceService.getOriginResource(key);
             //组装返回信息
-            List<WXImageMessage> list =jiuMoResourceService.bookResourcesTOWxMessage(dataInfos);
-            resultxml = WXUtil.createUrlMesg(ToUserName,FromUserName,new Date().getTime()/1000,list);
+            //List<WXImageMessage> list =jiuMoResourceService.bookResourcesTOWxMessage(dataInfos);
+
+            List<Book> bookPage = bookService.quertBookList(key,1,8);
+
+
+            resultxml = WXUtil.createBookUrlMesg(ToUserName,FromUserName,new Date().getTime()/1000,bookPage);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         System.out.println(resultxml.toString());

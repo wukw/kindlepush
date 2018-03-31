@@ -1,4 +1,4 @@
-package com.wukw.kindle.kindle.config;
+package com.wukw.kindle.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

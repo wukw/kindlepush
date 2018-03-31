@@ -1,4 +1,4 @@
-package com.wukw.kindle.kindle;
+package com.wukw.kindle;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

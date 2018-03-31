@@ -1,7 +1,7 @@
-package com.wukw.kindle.kindle.Controller;
+package com.wukw.kindle.Controller;
 
-import com.wukw.kindle.kindle.Model.DataInfo;
-import com.wukw.kindle.kindle.Service.JiuMoResourceService;
+import com.wukw.kindle.Model.DataInfo;
+import com.wukw.kindle.Service.JiuMoResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
