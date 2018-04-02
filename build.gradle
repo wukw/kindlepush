@@ -1,0 +1,130 @@
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+    }
+    repositories {
+
+        jcenter()
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "http://365yunbao.cn:8081/nexus/content/repositories/spring-io/" }
+
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+
+
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    group = 'com.wukw.kindlepush'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        maven { url "http://365yunbao.cn:8081/nexus/content/repositories/thirdparty/" }
+        jcenter()
+        mavenCentral()
+        maven { url "http://365yunbao.cn:8081/nexus/content/repositories/central/" }
+        maven { url "http://365yunbao.cn:8081/nexus/content/repositories/spring-io/" }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+
+    }
+
+
+    ext {
+        //spring cloud版本
+        springCloudVersion = 'Edgware.RELEASE'
+        //mybatis版本
+        myBatisGeneratorVersion = '1.3.5'
+        myBatisVersion = '3.4.5'
+        myBatisStringVersion = '1.3.1'
+        //分页插件版本
+        pagehelperVersion = '5.1.2'
+        mapperVersion = '3.4.5'
+        mybatisSpringBootStarterVersion = '1.3.1'
+        mapperSpringBootStarterVersion = '1.1.5'
+        pagehelperSpringBootStarterVersion = '1.2.3'
+        //数据库驱动版本
+        mysqlConnectorVersion = '5.1.44'
+        //dubboStarter版本
+        dubboStarterVersion = '1.0.0A'
+        //commons-io版本
+        thumbnailatorVersion = '0.4.8'
+        //springBootStarter库
+        springbootstarterVersion = '2.0.0.M7'
+        //springBootStarter库
+        dubboVersion = '2.5.7'
+        //mq版本号
+        mqVersion = "2.0.0.M7"
+        //gson版本号
+        gSonVersion = "2.8.2"
+        //excle 导出版本号
+        easypoiVersion="3.1.0"
+        //lcn版本号
+        lcnLastVersion = "4.1.0"
+
+
+    }
+
+    dependencies {
+        compile('com.zaxxer:HikariCP')
+        compile('com.alibaba:druid:1.1.8')
+        compile('org.springframework.boot:spring-boot-starter-actuator')
+        compile('org.springframework.boot:spring-boot-starter-web')
+        compile('org.springframework.boot:spring-boot-starter-aop')
+        compile('org.springframework.boot:spring-boot-starter-amqp')
+        compile("org.springframework.cloud:spring-cloud-starter-eureka")
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        compile('org.springframework.retry:spring-retry')
+        runtime('org.springframework.boot:spring-boot-devtools')
+        compileOnly('org.projectlombok:lombok')
+        // https://mvnrepository.com/artifact/org.jsoup/jsoup
+        compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+        // https://mvnrepository.com/artifact/javax.xml.parsers/jaxp-api
+        compile group: 'javax.xml.parsers', name: 'jaxp-api', version: '1.4.5'
+        // https://mvnrepository.com/artifact/net.sourceforge.htmlcleaner/htmlcleaner
+        compile group: 'net.sourceforge.htmlcleaner', name: 'htmlcleaner', version: '2.21'
+        // https://mvnrepository.com/artifact/dom4j/dom4j
+        compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+        // https://mvnrepository.com/artifact/com.alibaba/fastjson
+        compile group: 'com.alibaba', name: 'fastjson', version: '1.2.46'
+        // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+        compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.1'
+
+        compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
+
+
+
+    }
+
+    jar {
+        manifest {
+            attributes("Implementation-Title": "Gradle")
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    buildscript{
+        dependencies{
+
+        }
+    }
+}
+
